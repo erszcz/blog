@@ -5,8 +5,7 @@
 -spec call(contact_information:t()) -> integer().
 call(Contact) ->
     %% unpack the contact info
-    #{phone_number := PN} = Contact,
-    URL = <<"http://example.com/call/", PN/bytes>>,
+    URL = <<"http://example.com/call/", (maps:get(phone_number, Contact))/bytes>>,
     {ok, Status} = post(URL),
     Status.
 
