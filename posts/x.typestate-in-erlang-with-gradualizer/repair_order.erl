@@ -10,19 +10,27 @@
                   vehicle,
                   customer,
                   state}).
--type t(State) :: #?MODULE{state :: State}.
+-type t() :: #?MODULE{state :: state()}.
 
--type new() :: new.
--type valid() :: valid.
 -type invalid() :: {invalid, [string()]}.
 -record(in_progress, {assigned_technician,
                       steps_left = []}).
 -type in_progress() :: #in_progress{}.
--type work_done() :: work_done.
--type waiting_for_payment() :: waiting_for_payment.
--type paid() :: {paid, non_neg_integer()}.
 
--spec validate(t(new())) -> result(t(valid()), t(invalid())).
+-type state() :: new | valid | invalid() | in_progress()
+               | work_done | waiting_for_payment | paid.
+
+%-type new() :: new.
+%-type valid() :: valid.
+%-type invalid() :: {invalid, [string()]}.
+%-record(in_progress, {assigned_technician,
+%                      steps_left = []}).
+%-type in_progress() :: #in_progress{}.
+%-type work_done() :: work_done.
+%-type waiting_for_payment() :: waiting_for_payment.
+%-type paid() :: {paid, non_neg_integer()}.
+
+-spec validate(t()) -> result(t(), t()).
 validate(Order) ->
     case is_valid(Order) of
         true -> {ok, #?MODULE{state = valid}};
@@ -33,14 +41,14 @@ validate(Order) ->
         %%      true -> {ok, #?MODULE{state = valid}};
         %%      false -> {error, #?MODULE{state = invalid}}
         %%               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        %false -> {error, #?MODULE{state = invalid}}
-        false -> {error, #?MODULE{state = {invalid, ["error1", "error2"]}}}
+        false -> {error, #?MODULE{state = invalid}}
+        %false -> {error, #?MODULE{state = {invalid, ["error1", "error2"]}}}
     end.
 
--spec invalid_use() -> result(t(_), t(_)).
+-spec invalid_use() -> result(t(), t()).
 invalid_use() ->
     %% this `asd' should be flagged as an error!
-    %validate(#?MODULE{state = asd}).
-    validate(#?MODULE{state = new}).
+    validate(#?MODULE{state = asd}).
+    %validate(#?MODULE{state = new}).
 
 is_valid(_) -> false.
