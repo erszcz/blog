@@ -1,13 +1,13 @@
 # Make illegal states unrepresentable - but how? The Typestate Pattern in Erlang
 
-_Make illegal states unrepresentable_ is one of the practices
+_Making illegal states unrepresentable_ is one of the practices
 [Yaron Minsky from Jane Street preached in his Effective ML lectures][effective-ml]
 on programming in OCaml some 10 years ago.
 Could this technique be applied in Erlang,
 which is known for being notoriously hard to typecheck?
 Let's find out!
 
-Minsky's original example shows how to refactor C-style "bag of things and an enum"
+Minsky's original example shows how to refactor a C-style "bag of things and an enum"
 representation of a state machine:
 
 ```ocaml
@@ -290,9 +290,12 @@ distinct types we get the benefits of:
 
 Moreover, we don't really have to type everything!
 We can pick and choose which fields are important to be typed,
-since the transitions depend on them and which are not.
+since the transitions depend on them, and which are not.
 The more type annotations we provide in the code, though,
-the higher level of confidence in its correctness we get.
+the higher level of confidence in its correctness we get at compile time,
+and the more information we pass on to people reading it later.
+Ultimately, we can just run the code as usual, since it's still ordinary Erlang,
+and typechecking it is completely separate from compiling it.
 
 Some of you might ask, though, "what if I make a mistake in my types or specs?"
 Well, obviously, the typechecker won't be able to catch errors based on
