@@ -1,0 +1,42 @@
+17:19:17 erszcz @ x6 : /tmp/exhaustiveness
+$ elixirc test.ex
+warning: redefining module Test (current version loaded from Elixir.Test.beam)
+  test.ex:1
+
+warning: redefining module Test.R1 (current version loaded from Elixir.Test.R1.beam)
+  test.ex:15
+
+warning: redefining module Test.R2 (current version loaded from Elixir.Test.R2.beam)
+  test.ex:21
+
+warning: unused import Test.R2
+  test.ex:32
+
+17:19:40 erszcz @ x6 : /tmp/exhaustiveness
+$ iex -pa ~/work/josefs/gradualizer/ebin/
+Erlang/OTP 24 [RELEASE CANDIDATE 2] [erts-12.0] [source] [64-bit] [smp:8:8] [ds:8:8:10] [async-threads:1] [jit]
+
+Interactive Elixir (1.11.2) - press Ctrl+C to exit (type h() ENTER for help)
+iex(1)> :file
+file              file_io_server    file_server       file_sorter
+filelib           filename
+iex(1)> :filelib.wildcard('./Elixir*')
+['Elixir.Test.R1.beam', 'Elixir.Test.R2.beam', 'Elixir.Test.S1.beam',
+ 'Elixir.Test.S2.beam', 'Elixir.Test.beam']
+iex(2)> :gradualizer_db.import_beam_files(:filelib.wildcard('./Elixir*'))
+** (exit) exited in: :gen_server.call(:gradualizer_db, {:import_beam_files, ['Elixir.Test.R1.beam', 'Elixir.Test.R2.beam', 'Elixir.Test.S1.beam', 'Elixir.Test.S2.beam', 'Elixir.Test.beam']}, :infinity)
+    ** (EXIT) no process: the process is not alive or there's no process currently associated with the given name, possibly because its application isn't started
+    (stdlib 3.15) gen_server.erl:247: :gen_server.call/3
+iex(2)> Application.ensure_all_started(:gradualizer)
+{:ok, [:gradualizer]}
+iex(3)> :gradualizer_db.import_beam_files(:filelib.wildcard('./Elixir*'))
+:ok
+iex(4)> :gradualizer.type_check_file('Elixir.Test.beam')
+Elixir.Test.beam: Nonexhaustive patterns on line 8
+Example values which are not covered:
+        b
+Elixir.Test.beam: Nonexhaustive patterns on line 35
+Example values which are not covered:
+        {r2, 0}
+:nok
+iex(5)>

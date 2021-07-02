@@ -1,0 +1,10 @@
+^C17:22:25 erszcz @ x6 : /tmp/exhaustiveness
+$ erlc +debug_info test.erl
+17:22:28 erszcz @ x6 : /tmp/exhaustiveness
+$ gradualizer test.beam
+test.beam: Nonexhaustive patterns on line 13 at column 9
+Example values which are not covered:
+    b
+test.beam: Nonexhaustive patterns on line 29 at column 9
+Example values which are not covered:
+    #r2{}
