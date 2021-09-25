@@ -1,11 +1,19 @@
 -module(examples).
+-gradualizer([infer]).
+
+%% If Gradualizer warnings don't show up make sure you have Gradualizer ebin/ on your code path.
+%% For example:
+%%
+%%   $ export ERL_LIBS=/Users/erszcz/work/erszcz
+%%
+%% Given /Users/erszcz/work/erszcz/gradualizer/ebin exists and is populated.
 
 -export([bad_initialization/0]).
 
 -spec bad_initialization() -> integer().
 bad_initialization() ->
-    MyContactInformation = #{phone_number => 123},
-    %MyContactInformation = contact_information(123),
+    %MyContactInformation = #{phone_number => 123},
+    MyContactInformation = contact_information(123),
     phone_service:call(MyContactInformation).
 
 -spec contact_information(binary()) -> contact_information:t().
