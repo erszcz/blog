@@ -1,0 +1,14 @@
+https://blog.codinghorror.com/object-relational-mapping-is-the-vietnam-of-computer-science/
+
+Well, I have a few points backing why I think the article is outdated / inaccurate when read with Ecto in mind:
+
+Elixir is not an object-oriented language and Ecto is not an object-relational mapper, i.e. there are no objects in sight in the first place:  no inheritance (and definitely no multiple inheritance :grimacing:), no properties aka accessors which could hide logic, no distinction between private/public fields. This means there’s no issue of abandonment of the OO model. There’s just no such OO model to abandon. Elixir structs are way more like POJO / POCO - Plain Old Java/C# Objects - just data in a thin envelope. Because of that the issue of abandonment or wholehearted acceptance is not there.
+
+Manual mapping is entirely taken care of by Ecto, thanks to Ecto schemas and macros. In cases where necessary SQL snippets can be embedded as fragments. If you really need it, you can even write SQL directly for specific queries, but use Ecto for everything else. This addresses any possible ORM limitations. The “second schema” is alleviated significantly thanks to Ecto data types which are automatically mapped to common DB data types. At the same time, Ecto schemas define Elixir level structs to use in app code.
+
+Thanks to Elixir having first-class metaprogramming support with macros, the problem of integration into the language is solved in an elegant way. There’s a query DSL since day one similar to LINQ (which, back then, was a novelty).
+
+Jeff concludes with:
+the only workable solution to the ORM problem is to pick one or the other: either abandon relational databases, or abandon objects. If you take the O or the R out of the equation, you no longer have a mapping problem.
+
+Apparently, exactly this has happened. Thanks to functional programming languages gaining popularity and O being taken out of the equation the problem is not there anymore. Or, at the very least, it’s not as big of a problem as it appeared to be at the time.
